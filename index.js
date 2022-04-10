@@ -18,13 +18,13 @@ if (!db)
 else
     console.log("Db connected successfully");
 
-var port = process.env.PORT || 8000;
+var port = 8000;
 
 // Send message for default URL
 app.get('/', (req, res) => res.send('Hello World with Express'));
 app.use('/api', apiRoutes);
 
-// Launch app to listen to specified port
+// Launch app to listen to specified port 
 app.listen(port, function () {
     console.log("Running project on port " + port);
 });
