@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 // Connect to Mongoose and set connection variable
-mongoose.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/Temp', { useNewUrlParser: true });
 var db = mongoose.connection;
 if (!db)
     console.log("Error connecting db");
