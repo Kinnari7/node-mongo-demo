@@ -1,0 +1,13 @@
+let query = {
+    col_name: { operator_name: value },
+    col_name: value
+}
+
+find(query, projection)
+
+"Operators"
+size, gt, lt, all
+
+"for array of objects in key"
+instock
+

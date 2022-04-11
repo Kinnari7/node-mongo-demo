@@ -2,7 +2,10 @@ const userService = {};
 const Modals = require('../../../models')
 
 userService.getUsersList = () => {
-    return Modals.Users.find();
+    let query = {
+        age: { $gt: 20 }
+    }
+    return Modals.Users.find(query, { name: 1, _id: 0 });
 }
 
 userService.addUsersList = (data) => {

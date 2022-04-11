@@ -9,9 +9,7 @@ var userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    gender: String,
-    phone: String,
-
+    age: Number,
 }, {
     timestamps: true
 });
