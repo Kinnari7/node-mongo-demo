@@ -5,6 +5,21 @@ const userController = require('./userController');
 const getUsersMiddleware = [
     userController.getUsersList
 ];
-userRoute.post('/get-user', getUsersMiddleware);
+userRoutes.get('/get-user', getUsersMiddleware);
 
-module.exports = userRoutes;
+const addUsersMiddleware = [
+    userController.addUsersList
+];
+userRoutes.post('/add-user', addUsersMiddleware);
+
+const editUsersMiddleware = [
+    userController.editUsersList
+];
+userRoutes.post('/edit-user/:id', editUsersMiddleware);
+
+const deleteUsersMiddleware = [
+    userController.deleteUsersList
+];
+userRoutes.delete('/delete-user/:id', deleteUsersMiddleware);
+
+module.exports = userRoutes;    

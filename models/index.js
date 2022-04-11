@@ -1,7 +1,7 @@
-const Contact = require('./contactModel');
+const Users = require('./userModel');
 
 const MongoModals = {
-    Contact
+    Users
 };
 
 module.exports = MongoModals;
