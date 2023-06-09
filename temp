@@ -1,13 +1,20 @@
-let query = {
-    col_name: { operator_name: value },
-    col_name: value
-}
+- table create
+- apply query simple
+- aggegation pipeline
+- jwt authUser
+- validation on req data
+- populate
+- success and error res handle
+- folder structure
+- different stages for pipeline and query
+- notenv
+- schema creation, primary and forign key creation in schema
+- cluster DB sync up
+- indexing - single field index, compound index, multikey, Geospatial, text search, hashed, clustered
+- collation
 
-find(query, projection)
-
-"Operators"
-size, gt, lt, all
-
-"for array of objects in key"
-instock
+//need to check
+populate
+gridfs
+capedCollection
 

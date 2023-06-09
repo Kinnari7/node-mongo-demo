@@ -1,7 +1,9 @@
 const Users = require('./userModel');
+const Products = require('./productModel');
 
 const MongoModals = {
-    Users
+    Users,
+    Products
 }
 
 module.exports = MongoModals;

@@ -1,21 +1,32 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 // Setup schema
-var userSchema = new mongoose.Schema({
+var userSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     age: Number,
-}, {
-    timestamps: true
-});
-// Export Contact model
-const Users = mongoose.model('Users', userSchema);
+    password: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const Users = mongoose.model("Users", userSchema);
+userSchema.index({ email: 1 });
 module.exports = Users;
-module.exports.get = function (callback, limit) {
-    Users.find(callback).limit(limit);
-};
+
