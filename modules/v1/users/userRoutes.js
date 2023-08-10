@@ -38,4 +38,9 @@ const getProductsMiddleware = [
 ];
 userRoutes.get('/get-product', getProductsMiddleware);
 
+const uploadImageMiddleware = [
+    userController.uploadImage
+];
+userRoutes.post('/upload-profile', uploadImageMiddleware);
+
 module.exports = userRoutes;    

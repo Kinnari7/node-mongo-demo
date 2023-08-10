@@ -12,6 +12,11 @@
 - cluster DB sync up
 - indexing - single field index, compound index, multikey, Geospatial, text search, hashed, clustered
 - collation
+- replication
+- sharding
+
+mongoose
+- virtuals
 
 //need to check
 populate

@@ -2,6 +2,7 @@ const userController = {};
 const { size } = require('lodash');
 const userService = require('./userService');
 const authUser = require('../../../authentication/jwt');
+const uploadImage = require('../../../uploadImage');
 
 userController.loginUser = async (req, res) => {
     try {
@@ -27,7 +28,9 @@ userController.loginUser = async (req, res) => {
         })
     }
 };
-
+/** 
+@param
+*/ 
 userController.getUsersList = async (req, res) => {
     try {
         let response = await userService.getUsersList(req.body);
@@ -103,6 +106,23 @@ userController.deleteUsersList = async (req, res) => {
             data: e
         })
     }
+};
+
+userController.uploadImage = async (req, res) => {
+    console.log('req body is.....',req.body)
+    const data = uploadImage.uploadImage;
+    console.log('data is.....',data)
+    // try {
+    //     res.send({
+    //         msg: 'Success',
+    //         data: 'Image uploaded successfully.'
+    //     })
+    // } catch (e) {
+    //     return res.send({
+    //         msg: 'Error',
+    //         data: e
+    //     })
+    // }
 };
 
 module.exports = userController;

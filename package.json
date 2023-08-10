@@ -1,5 +1,5 @@
 {
-  "name": "mongo-demo",
+  "name": "node-mongo-demo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,13 +10,16 @@
   "author": "Kinnari",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1411.0",
     "body-parser": "^1.19.1",
     "dotenv": "^16.0.3",
     "express": "^4.17.2",
+    "jimp": "^0.22.8",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "mongoose": "^6.1.8",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "uuid": "^9.0.0"
   }
 }
