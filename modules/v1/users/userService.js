@@ -1,5 +1,6 @@
 const userService = {};
 const Modals = require("../../../models");
+const crypto = require('crypto');
 
 userService.getUsersList = async (reqData) => {
   // const pipeline = [
@@ -33,7 +34,7 @@ userService.getUsersList = async (reqData) => {
   if (!perPage) perPage = 2;
   const skipData = (page - 1) * perPage;
   const totalRecord = await Modals.Users.countDocuments();
-  const records = await Modals.Users.find({}, { email: 1, name: 1 })
+  const records = await Modals.Users.find({})
     .skip(skipData)
     .limit(perPage);
   const totalPages = Math.ceil(totalRecord / perPage);
@@ -47,35 +48,58 @@ userService.getUsersList = async (reqData) => {
 };
 
 userService.addUsersList = async (data) => {
+  const token = crypto.randomBytes(12).toString('hex');
+  data.verificationToken = token;
   return await Modals.Users.create(data);
 };
 
+userService.addUserLocation = (reqData, userId) => {
+  return Modals.UserLocations.findOneAndUpdate(
+    {
+      user_id: userId,
+    },
+    {
+      latitude: reqData?.signUpLoc?.latitude,
+      longitude: reqData?.signUpLoc?.longitude
+    },
+    {
+      new: true,   // Return the updated document
+      upsert: true // If no document matches, create a new one (optional)
+    }
+  );
+};
+
+userService.addUserPreference = (reqData, userId) => {
+  return Modals.UserPreferences.findOneAndUpdate(
+    { user_id: userId },
+    {
+      $set: {
+        inAppNotification: reqData?.inAppNotification || false,
+        notificationToMyPost: reqData?.notificationToMyPost || false,
+        optOutCommunication: reqData?.optOutCommunication || false,
+        language: reqData?.language || 'English'
+      }
+    },
+    {
+      new: true,
+      upsert: true
+    }
+  );
+};
+
 userService.authUser = (data) => {
-  return Modals.Users.findOne(data, { name: 1, email: 1, _id: 1 }).lean();
+  return Modals.Users.findOne({ email: data.email, password: data.password }).lean();
 };
 
-userService.editUsersList = (id, data) => {
-  return Modals.Users.updateOne({ _id: id }, data);
+userService.addGuestUser = (data) => {
+  data.lastLoginDate = new Date();
+  return Modals.GuestUsers.create(data);
 };
 
-userService.deleteUsersList = (id, data) => {
-  return Modals.Users.deleteOne({ _id: id });
-};
-
-userService.getProductsList = () => {
-  const pipeline = [
-    { $match: { available: "yes" } },
-    {
-      $group: {
-        _id: "$brand",
-        total: { $sum: "$price" },
-      },
-    },
-    {
-      $sort: { total: -1 },
-    },
-  ];
-  return Modals.Products.aggregate(pipeline, {});
+userService.verifyEmail = (data) => {
+  return Modals.Users.findOneAndUpdate({ verificationToken: data.token }, {
+    isVerified: true
+  }, { new: true, lean: true }).lean();
 };
 
 module.exports = userService;

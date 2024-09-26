@@ -10,19 +10,57 @@ var userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    age: Number,
     password: {
       type: String,
       required: true,
     },
-    title: {
+    deviceId: {
       type: String,
       required: true,
     },
-    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
+    deviceToken: {
+      type: String,
+      required: true,
+    },
+    deviceType: {
+      type: Number,
+      required: true,
+    },
+    countryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Countries",
+      required: true,
+    },
+    photo: {
+      type: String,
+      required: false,
+    },
+    phone: {
+      type: String,
+      required: false,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    status: {
+      type: String,
+      required: false,
+    },
+    isVerified: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    verificationToken: {
+      type: String,
+      required: false
+    }
+    // products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
   },
   {
-    timestamps: true,
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
   }
 );
 

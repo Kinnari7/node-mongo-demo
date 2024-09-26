@@ -13,10 +13,10 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 // Connect to Mongoose and set connection variable
-mongoose.connect(process.env.DB_URL).then(() => {
+mongoose.connect("mongodb://localhost:27017/TrackTheTrail").then(() => {
     console.log("Db connected successfully");
 }).catch((err) => {
-    console.log("Error connecting db",err);
+    console.log("Error connecting db", err);
 });
 
 var port = 8000;

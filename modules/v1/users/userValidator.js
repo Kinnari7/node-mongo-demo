@@ -1,6 +1,8 @@
 const userValidator = {};
 const Joi = require("joi");
 const { errorResponse } = require("../../../utils/helpers");
+const { Users } = require("../../../models");
+const Modals = require("../../../models");
 
 userValidator.validateAddUser = (req, res, next) => {
   const schema = Joi.object().keys({

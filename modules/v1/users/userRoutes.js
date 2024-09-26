@@ -1,46 +1,40 @@
 const express = require('express');
 const userRoutes = express.Router();
 const userController = require('./userController');
+const userMiddleware = require('./userMiddleware');
 const authUser = require('../../../authentication/jwt');
 const userValidator = require('./userValidator');
 
+// register api
+const registerMiddleware = [
+    userMiddleware.emailExists,
+    userController.registerUser
+];
+userRoutes.post('/register', registerMiddleware);
+
+// login api
 const loginMiddleware = [
     userController.loginUser
 ];
 userRoutes.post('/login', loginMiddleware);
 
+// verify email
+const verifyEmailMiddleware = [
+    userController.verifyEmail
+];
+userRoutes.post('/verify-email', verifyEmailMiddleware);
+
+// admin get users list
 const getUsersMiddleware = [
-    authUser.validateJWTToken,
+    // authUser.validateJWTToken,
     userController.getUsersList
 ];
-userRoutes.post('/get-user', getUsersMiddleware);
+userRoutes.post('/admin/get-users', getUsersMiddleware);
 
+// add guest user
 const addUsersMiddleware = [
-    authUser.validateJWTToken,
-    userValidator.validateAddUser,
-    userController.addUsersList
+    userController.addGuestUser
 ];
-userRoutes.post('/add-user', addUsersMiddleware);
-
-const editUsersMiddleware = [
-    userController.editUsersList
-];
-userRoutes.post('/edit-user/:id', editUsersMiddleware);
-
-const deleteUsersMiddleware = [
-    userController.deleteUsersList
-];
-userRoutes.delete('/delete-user/:id', deleteUsersMiddleware);
-
-const getProductsMiddleware = [
-    authUser.validateJWTToken,
-    userController.getProductsList
-];
-userRoutes.get('/get-product', getProductsMiddleware);
-
-const uploadImageMiddleware = [
-    userController.uploadImage
-];
-userRoutes.post('/upload-profile', uploadImageMiddleware);
+userRoutes.post('/add-guest-user', addUsersMiddleware);
 
 module.exports = userRoutes;    
