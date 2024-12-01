@@ -1,6 +1,7 @@
 const userService = {};
 const Modals = require("../../../models");
 const crypto = require('crypto');
+const { size } = require('lodash');
 
 userService.getUsersList = async (reqData) => {
   // const pipeline = [
@@ -53,38 +54,42 @@ userService.addUsersList = async (data) => {
   return await Modals.Users.create(data);
 };
 
-userService.addUserLocation = (reqData, userId) => {
-  return Modals.UserLocations.findOneAndUpdate(
-    {
+userService.addUserLocation = async (reqData, userId) => {
+  let userLocation = await Modals.UserLocations.findOne({ user_id: userId });
+  if (size(userLocation) < 0) {
+    // Use create to ensure the auto-increment works
+    userLocation = await Modals.UserLocations.create({
       user_id: userId,
-    },
-    {
       latitude: reqData?.signUpLoc?.latitude,
       longitude: reqData?.signUpLoc?.longitude
-    },
-    {
-      new: true,   // Return the updated document
-      upsert: true // If no document matches, create a new one (optional)
-    }
-  );
+    });
+  }
+
+  return userLocation;
 };
 
-userService.addUserPreference = (reqData, userId) => {
-  return Modals.UserPreferences.findOneAndUpdate(
-    { user_id: userId },
-    {
-      $set: {
-        inAppNotification: reqData?.inAppNotification || false,
-        notificationToMyPost: reqData?.notificationToMyPost || false,
-        optOutCommunication: reqData?.optOutCommunication || false,
-        language: reqData?.language || 'English'
-      }
-    },
-    {
-      new: true,
-      upsert: true
-    }
-  );
+userService.addUserPreference = async (reqData, userId) => {
+  let userPreferences = await Modals.UserPreferences.findOne({ user_id: userId });
+  if (size(userPreferences) > 0) {
+    // If the document exists, update the necessary fields
+    userPreferences.inAppNotification = reqData?.inAppNotification || false;
+    userPreferences.notificationToMyPost = reqData?.notificationToMyPost || false;
+    userPreferences.optOutCommunication = reqData?.optOutCommunication || false;
+    userPreferences.language = reqData?.language || 'English';
+    // Save the updated document
+    await userPreferences.save();
+  } else {
+    // If the document does not exist, create it to trigger the auto-increment functionality
+    userPreferences = await Modals.UserPreferences.create({
+      user_id: userId,
+      inAppNotification: reqData?.inAppNotification || false,
+      notificationToMyPost: reqData?.notificationToMyPost || false,
+      optOutCommunication: reqData?.optOutCommunication || false,
+      language: reqData?.language || 'English'
+    });
+  }
+
+  return userPreferences;
 };
 
 userService.authUser = (data) => {

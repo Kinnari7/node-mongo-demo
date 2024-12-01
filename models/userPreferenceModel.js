@@ -1,9 +1,10 @@
 var mongoose = require("mongoose");
+const AutoIncrement = require('./autoIncrementModel');
 // Setup schema
 var userPreferencesSchema = new mongoose.Schema(
     {
         user_id: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Number,
             ref: "Users",
             required: true,
         },
@@ -26,13 +27,16 @@ var userPreferencesSchema = new mongoose.Schema(
             type: String,
             required: false,
             default: "English"
-        }
+        },
+        id: { type: Number, unique: true },
     },
     {
         timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+        // _id: false
     }
 );
 
-const UserPreferences = mongoose.model("UserPreferences", userPreferencesSchema);
+userPreferencesSchema.plugin(AutoIncrement, { modelName: 'UserPreferences', field: 'id' });
+const UserPreferences = mongoose.model.UserPreferences || mongoose.model("UserPreferences", userPreferencesSchema);
 module.exports = UserPreferences;
 

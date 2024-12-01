@@ -8,4 +8,10 @@ const getCountryListMiddleware = [
 ];
 countryRoutes.get('/get-all-countries', getCountryListMiddleware);
 
+// update country name for user
+const updateCountryStatusMiddleware = [
+    countryController.updateCountryStatus
+];
+countryRoutes.put('/status/country-status-update', updateCountryStatusMiddleware);
+
 module.exports = countryRoutes;    

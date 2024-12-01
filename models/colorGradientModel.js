@@ -1,9 +1,10 @@
 var mongoose = require("mongoose");
+const AutoIncrement = require('./autoIncrementModel');
 // Setup schema
 var colorGradientSchema = new mongoose.Schema(
     {
         hike_id: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Number,
             ref: "Hikes",
             required: true,
         },
@@ -11,13 +12,16 @@ var colorGradientSchema = new mongoose.Schema(
             type: String,
             required: false,
             color: "red"
-        }
+        },
+        id: { type: Number, unique: true },
     },
     {
         timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+        // _id: false
     }
 );
 
-const ColorGradients = mongoose.model("ColorGradients", colorGradientSchema);
+colorGradientSchema.plugin(AutoIncrement, { modelName: 'ColorGradients', field: 'id' });
+const ColorGradients = mongoose.model.ColorGradients || mongoose.model("ColorGradients", colorGradientSchema);
 module.exports = ColorGradients;
 

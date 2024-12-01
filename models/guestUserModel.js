@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+const AutoIncrement = require('./autoIncrementModel');
 // Setup schema
 var guestUserSchema = new mongoose.Schema(
     {
@@ -21,19 +22,22 @@ var guestUserSchema = new mongoose.Schema(
         countryId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Countries",
-            required: true,
+            required: false,
         },
         cartCount: {
             type: Number,
             required: false,
             default: 0
-        }
+        },
+        id: { type: Number, unique: true },
     },
     {
         timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+        // _id: false
     }
 );
 
-const GuestUsers = mongoose.model("GuestUsers", guestUserSchema);
+guestUserSchema.plugin(AutoIncrement, { modelName: 'GuestUsers', field: 'id' });
+const GuestUsers = mongoose.model.GuestUsers || mongoose.model("GuestUsers", guestUserSchema);
 module.exports = GuestUsers;
 

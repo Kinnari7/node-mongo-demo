@@ -1,26 +1,30 @@
 var mongoose = require("mongoose");
+const AutoIncrement = require('./autoIncrementModel');
 // Setup schema
 var userLocationSchema = new mongoose.Schema(
     {
         user_id: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Number,
             ref: "Users",
             required: true,
         },
         latitude: {
-            type: Number,
+            type: String,
             required: true,
         },
         longitude: {
-            type: Number,
+            type: String,
             required: true,
-        }
+        },
+        id: { type: Number, unique: true },
     },
     {
         timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+        // _id: false
     }
 );
 
-const UserLocations = mongoose.model("UserLocations", userLocationSchema);
+userLocationSchema.plugin(AutoIncrement, { modelName: 'UserLocations', field: 'id' });
+const UserLocations = mongoose.model.UserLocations || mongoose.model("UserLocations", userLocationSchema);
 module.exports = UserLocations;
 

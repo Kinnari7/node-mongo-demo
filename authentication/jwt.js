@@ -7,7 +7,7 @@ const Modals = require('../models');
 authUser.createJWTToken = async (data) => {
     var token = jwt.sign(data, process.env.JWT_PRIVATE_KEY);
     return token;
-}
+};
 
 authUser.validateJWTToken = async (req, res, next) => {
     let token = req.headers && req.headers['authorization'];
@@ -17,7 +17,7 @@ authUser.validateJWTToken = async (req, res, next) => {
         var user = jwt.verify(authToken, process.env.JWT_PRIVATE_KEY);
         const currentUser = await Modals.Users.findOne({
             email: user.email,
-            _id: user._id
+            id: user.id
         });
         if (currentUser) {
             req.currentUser = currentUser;
@@ -25,12 +25,12 @@ authUser.validateJWTToken = async (req, res, next) => {
         next();
     }
     catch (err) {
-        errorResponse(res, { message: 'Invalid Token', status: 404 })
+        errorResponse(res, { message: 'Invalid Token', status: 404 });
     }
-}
+};
 
 authUser.sendEmailVerificationLink = async (data) => {
-    console.log('data islll',data)
+    console.log('data islll', data);
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -60,6 +60,6 @@ authUser.sendEmailVerificationLink = async (data) => {
         }
         console.log('Email sent: ' + info.response);
     });
-}
+};
 
 module.exports = authUser;

@@ -8,7 +8,7 @@ const getChallengesList = [
     // authUser.validateJWTToken,
     challengeController.getChallengesList
 ];
-challengeRoutes.get('/get-challenges', getChallengesList);
+challengeRoutes.post('/get-challenges', getChallengesList);
 
 // add challenge by admin
 const addChallengeMiddleware = [

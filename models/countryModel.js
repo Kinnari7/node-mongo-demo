@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+// const AutoIncrement = require('./autoIncrementModel');
 // Setup schema
 var countrySchema = new mongoose.Schema(
     {
@@ -11,7 +12,7 @@ var countrySchema = new mongoose.Schema(
             required: true,
         },
         status: {
-            type: Number,
+            type: Boolean,
             required: true,
         },
         image: {
@@ -25,9 +26,11 @@ var countrySchema = new mongoose.Schema(
     },
     {
         timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+        // _id: false
     }
 );
 
-const Countries = mongoose.model("Countries", countrySchema);
+// countrySchema.plugin(AutoIncrement, { field: 'id' });
+const Countries = mongoose.model.Countries || mongoose.model("Countries", countrySchema);
 module.exports = Countries;
 

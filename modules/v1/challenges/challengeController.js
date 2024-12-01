@@ -7,13 +7,17 @@ challengeController.getChallengesList = async (req, res) => {
         let response = await challengeService.getChallengesList();
         await res.send({
             msg: 'All Challenges',
-            data: response
-        })
+            data: {
+                dayHike: response
+            },
+            status: 200,
+            success: true
+        });
     } catch (e) {
         return res.send({
             msg: 'Error',
             data: e
-        })
+        });
     }
 };
 
@@ -21,17 +25,17 @@ challengeController.addChallenge = async (req, res) => {
     try {
         let response = await challengeService.addChallenge(req.body);
         if (size(response) > 0) {
-            await challengeService.addChallengeColor(response._id, req.body);
+            await challengeService.addChallengeColor(response.id, req.body);
             await res.send({
                 msg: 'Challenge Added',
                 data: response
-            })
+            });
         }
     } catch (e) {
         return res.send({
             msg: 'Error',
             data: e
-        })
+        });
     }
 };
 
@@ -41,19 +45,19 @@ challengeController.getGuestChallengeList = async (req, res) => {
         const response = {
             ...guestDetails.toObject(),
             savedGuestUser: {
-                _id: guestDetails?._id,
+                id: guestDetails?.id,
                 challenges: []
             }
-        }
+        };
         await res.send({
             msg: 'Welcome! Guest User',
             data: response
-        })
+        });
     } catch (e) {
         return res.send({
             msg: 'Error',
             data: e
-        })
+        });
     }
 };
 

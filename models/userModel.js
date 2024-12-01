@@ -1,4 +1,6 @@
 var mongoose = require("mongoose");
+const AutoIncrement = require('./autoIncrementModel');
+
 // Setup schema
 var userSchema = new mongoose.Schema(
   {
@@ -27,9 +29,9 @@ var userSchema = new mongoose.Schema(
       required: true,
     },
     countryId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Number,
       ref: "Countries",
-      required: true,
+      required: false,
     },
     photo: {
       type: String,
@@ -56,15 +58,18 @@ var userSchema = new mongoose.Schema(
     verificationToken: {
       type: String,
       required: false
-    }
+    },
+    id: { type: Number, unique: true },
     // products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
+    // _id: false
   }
 );
 
-const Users = mongoose.model("Users", userSchema);
+userSchema.plugin(AutoIncrement, { modelName: 'Users', field: 'id' });
+const Users = mongoose.model.Users || mongoose.model("Users", userSchema);
 userSchema.index({ email: 1 });
 module.exports = Users;
 
