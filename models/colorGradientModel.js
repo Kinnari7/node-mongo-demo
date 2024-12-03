@@ -9,9 +9,9 @@ var colorGradientSchema = new mongoose.Schema(
             required: true,
         },
         color: {
-            type: String,
+            type: [String],
             required: false,
-            color: "red"
+            default: []
         },
         id: { type: Number, unique: true },
     },

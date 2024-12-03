@@ -31,6 +31,65 @@ var hikeSchema = new mongoose.Schema(
         countryId: {
             type: Number,
             required: true
+        },
+        difficulty: {
+            type: Number,
+            default: 5,
+            required: false
+        },
+        elevation: {
+            type: Number,
+            default: 1,
+            required: false
+        },
+        howItWorks: {
+            type: String,
+            required: false
+        },
+        route: {
+            type: [
+                {
+                    latitute: {
+                        type: Number,
+                        require: false,
+                    },
+                    longitude: {
+                        type: Number,
+                        require: false
+                    }
+                }
+            ],
+            default: []
+        },
+        adminMapImage: {
+            type: String,
+            default: null,
+            required: false
+        },
+        challengeType: {
+            type: String,
+            default: "Day Hike",
+            required: false
+        },
+        howItWorksLink: {
+            type: String,
+            default: null,
+            required: false
+        },
+        multipartRoute: {
+            type: [String],
+            default: [],
+            required: false,
+        },
+        asSubChallenge: {
+            type: Boolean,
+            default: false,
+            required: false
+        },
+        subChallenge: {
+            type: [String],
+            default: [],
+            required: false
         }
 
     },

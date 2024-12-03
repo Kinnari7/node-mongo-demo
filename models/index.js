@@ -5,6 +5,7 @@ const GuestUsers = require('./guestUserModel');
 const Hikes = require('./hikeModel');
 const UserLocations = require('./userLocationModel');
 const UserPreferences = require('./userPreferenceModel');
+const UserHike = require('./userHikeModel');
 
 const MongoModals = {
     Users,
@@ -13,7 +14,8 @@ const MongoModals = {
     GuestUsers,
     Hikes,
     UserLocations,
-    UserPreferences
+    UserPreferences,
+    UserHike
 };
 
 module.exports = MongoModals;

@@ -23,4 +23,28 @@ const getGuestChallengeList = [
 ];
 challengeRoutes.post('/get-guest-challenges', getGuestChallengeList);
 
+// get challenge
+const getChallenge = [
+    challengeController.getChallenge
+];
+challengeRoutes.post('/findChallenge', getChallenge);
+
+// fetch leaderboard
+const fetchLeaderboard = [
+    challengeController.fetchLeaderboard
+];
+challengeRoutes.post('/leaderboard', fetchLeaderboard);
+
+// update challenge
+const updateChallenge = [
+    challengeController.updateChallenge
+];
+challengeRoutes.post('/updateHike', updateChallenge);
+
+// delete challenge
+const deleteChallenge = [
+    challengeController.deleteChallenge
+];
+challengeRoutes.post('/deleteHike', deleteChallenge);
+
 module.exports = challengeRoutes;    
