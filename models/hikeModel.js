@@ -47,18 +47,22 @@ var hikeSchema = new mongoose.Schema(
             required: false
         },
         route: {
-            type: [
-                {
-                    latitute: {
-                        type: Number,
-                        require: false,
-                    },
-                    longitude: {
-                        type: Number,
-                        require: false
-                    }
+            type: {
+                coordinates: {
+                    type: [
+                        {
+                            latitute: {
+                                type: Number,
+                                require: false,
+                            },
+                            longitude: {
+                                type: Number,
+                                require: false
+                            }
+                        }
+                    ]
                 }
-            ],
+            },
             default: []
         },
         adminMapImage: {
@@ -90,8 +94,11 @@ var hikeSchema = new mongoose.Schema(
             type: [String],
             default: [],
             required: false
+        },
+        deletedAt: {
+            type: Date,
+            default: null
         }
-
     },
     {
         timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },

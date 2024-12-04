@@ -22,6 +22,10 @@ var countrySchema = new mongoose.Schema(
         index: {
             type: Number,
             required: true,
+        },
+        deletedAt: {
+            type: Date,
+            default: null
         }
     },
     {

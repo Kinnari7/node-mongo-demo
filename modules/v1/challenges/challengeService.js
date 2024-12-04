@@ -1,6 +1,7 @@
 const challengeService = {};
 const Modals = require("../../../models");
 const { size } = require('lodash');
+const { ObjectId } = require('mongodb');
 
 challengeService.getChallengesList = async () => {
   return await Modals.Hikes.aggregate([
@@ -61,7 +62,7 @@ challengeService.getGuestChallengeList = async (data) => {
 challengeService.getChallenge = async (data) => {
   return await Modals.Hikes.aggregate([
     {
-      $match: { id: data.id } // Filter to find the specific hike
+      $match: { _id: ObjectId(data.id) } // Filter to find the specific hike
     },
     {
       $lookup: {
@@ -88,13 +89,13 @@ challengeService.getChallenge = async (data) => {
 challengeService.getLeaderBoardData = async (data) => {
   return await Modals.UserHike.aggregate([
     {
-      $match: { hikeId: data.trailId }
+      $match: { hikeId: ObjectId(data.trailId) }
     },
     {
       $lookup: {
         from: "users",
         localField: "userId",
-        foreignField: "id",
+        foreignField: "_id",
         as: "userDetails"
       }
     },
@@ -105,61 +106,56 @@ challengeService.getLeaderBoardData = async (data) => {
         deviceId: { $arrayElemAt: ["$userDetails.deviceId", 0] },
         duration: 1,
         rank: 1,
-        trailId: 1,
+        trailId: {
+          $literal: data.trailId
+        },
         updatedAt: 1,
         userId: 1,
-        userName: { $arrayElemAt: ["$userDetails.name", 0] } 
+        userName: { $arrayElemAt: ["$userDetails.name", 0] }
       }
     }
   ]);
 };
 
 challengeService.getColorGradientForLB = async (data) => {
-  return await Modals.ColorGradients.find({ hike_id: data.trailId })
-}
+  return await Modals.ColorGradients.find({ hike_id: data.trailId });
+};
 
-challengeService.updateChallenge = async (req) => {
-  const userHike = await Modals.UserHike.updateOne({
-    id: req.id
-  }, {
-    $set: req.data
-  });
-  const details = await Modals.UserHike.aggregate([
-    {
-      $match: { userId: userId } // Filter by userId
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "userId",
-        foreignField: "id",
-        as: "userDetails"
-      }
-    },
-    {
-      $lookup: {
-        from: "hikes",
-        localField: "hikeId",
-        foreignField: "id",
-        as: "trailDetails"
-      }
-    },
-    {
-      $match: { "hikeId": hikeId }
-    },
-    {
-      $project: {
-        userDetails: 1,
-        trailDetails: 1,
-        "*": 1
-      }
-    }
-  ]);
-  return {...userHike, ...details};
-}
+challengeService.updateChallenge = async (data) => {
+  const userHike = await Modals.UserHike.findOneAndUpdate({
+    hikeId: ObjectId(data.trailId),
+    userId: ObjectId(data.userId)
+  },
+    { $set: data },
+    { lean: true });
+  const hikeDetail = await Modals.Hikes.findOne({ _id: ObjectId(data.trailId) }).lean();
+  return { ...userHike, ...hikeDetail };
+};
 
 challengeService.deleteChallenge = async (data) => {
-  await Modals.Hikes.deleteOne({ id: data.hikeId });
+  const userHike = await Modals.UserHike.findOne({
+    _id: ObjectId(data.hikeId),
+    userId: ObjectId(data.userId)
+  }).lean();
+  if (!userHike) {
+    throw new Error("UserHike not found or does not exist.");
+  }
+
+  await Modals.UserHike.deleteOne({ _id: ObjectId(data.hikeId), userId: ObjectId(data.userId) });
+  const hikeDetail = await Modals.Hikes.findOne({ _id: ObjectId(data.hikeId) }).lean();
+  console.log('.....', userHike);
+  return { ...userHike, ...hikeDetail };
+};
+
+challengeService.saveChallenge = async (data) => {
+  const transformedData = {
+    ...data,
+    hikeId: data.trailId,
+    userId: data.id
+  };
+  const userHike = await Modals.UserHike.create(transformedData);
+  const hikeDetail = await Modals.Hikes.findOne({ _id: data.trailId }).lean();
+  return { ...userHike.toObject(), ...hikeDetail };
 };
 
 module.exports = challengeService;

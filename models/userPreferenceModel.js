@@ -29,6 +29,10 @@ var userPreferencesSchema = new mongoose.Schema(
             default: "English"
         },
         id: { type: Number, unique: true },
+        deletedAt: {
+            type: Date,
+            default: null
+        }
     },
     {
         timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },

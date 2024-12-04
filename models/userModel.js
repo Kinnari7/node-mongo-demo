@@ -60,7 +60,10 @@ var userSchema = new mongoose.Schema(
       required: false
     },
     id: { type: Number, unique: true },
-    // products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
+    deletedAt: {
+      type: Date,
+      default: null
+    }
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },

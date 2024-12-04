@@ -30,6 +30,10 @@ var guestUserSchema = new mongoose.Schema(
             default: 0
         },
         id: { type: Number, unique: true },
+        deletedAt: {
+            type: Date,
+            default: null
+        }
     },
     {
         timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },

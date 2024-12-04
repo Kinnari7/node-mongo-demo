@@ -17,7 +17,7 @@ challengeController.getChallengesList = async (req, res) => {
         return res.send({
             message: 'Error',
             status: 200,
-	        success: false
+            success: false
         });
     }
 };
@@ -90,11 +90,11 @@ challengeController.getChallenge = async (req, res) => {
 challengeController.fetchLeaderboard = async (req, res) => {
     try {
         let allHikes = await challengeService.getLeaderBoardData(req.body);
-        let colorGradient = await challengeService.getColorGradientForLB(req.body);
+        // let colorGradient = await challengeService.getColorGradientForLB(req.body);
         await res.send({
             msg: 'Leader Board',
             data: {
-                ColorGradient: colorGradient,
+                ColorGradient: {},
                 hikes: allHikes
             },
             status: 200,
@@ -104,7 +104,8 @@ challengeController.fetchLeaderboard = async (req, res) => {
         return res.send({
             message: 'Error',
             status: 200,
-            success: false
+            success: false,
+            data: e
         });
     }
 };
@@ -114,21 +115,21 @@ challengeController.updateChallenge = async (req, res) => {
         let response = await challengeService.updateChallenge(req.body);
         if (size(response) > 0) {
             await res.send({
-                msg: 'Challenge Added',
+                msg: 'Update My Hike',
                 data: {
                     myHike: response,
                     newHikeId: '',
                     redeemCode: ''
                 },
                 status: 200,
-	            success: true
+                success: true
             });
         }
     } catch (e) {
         return res.send({
             message: 'Error',
             status: 200,
-	        success: false
+            success: false,
         });
     }
 };
@@ -141,7 +142,7 @@ challengeController.deleteChallenge = async (req, res) => {
                 msg: 'Hike deleted successfully',
                 data: response,
                 status: 200,
-	            success: true
+                success: true
 
             });
         }
@@ -149,7 +150,28 @@ challengeController.deleteChallenge = async (req, res) => {
         return res.send({
             message: 'Error',
             status: 200,
-	        success: false
+            success: false
+        });
+    }
+};
+
+challengeController.saveChallenge = async (req, res) => {
+    try {
+        let response = await challengeService.saveChallenge(req.body);
+        if (size(response) > 0) {
+            await res.send({
+                msg: 'Challenge Added Successfully',
+                data: response,
+                status: 200,
+                success: true
+            });
+        }
+    } catch (e) {
+        return res.send({
+            message: 'Error',
+            status: 200,
+            success: false,
+            data: e
         });
     }
 };

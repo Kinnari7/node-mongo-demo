@@ -17,6 +17,10 @@ var userLocationSchema = new mongoose.Schema(
             required: true,
         },
         id: { type: Number, unique: true },
+        deletedAt: {
+            type: Date,
+            default: null
+        }
     },
     {
         timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },

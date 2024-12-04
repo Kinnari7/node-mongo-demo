@@ -12,6 +12,6 @@ countryRoutes.get('/get-all-countries', getCountryListMiddleware);
 const updateCountryStatusMiddleware = [
     countryController.updateCountryStatus
 ];
-countryRoutes.put('/status/country-status-update', updateCountryStatusMiddleware);
+countryRoutes.put('/status/updateStatusOfCountry', updateCountryStatusMiddleware);
 
 module.exports = countryRoutes;    

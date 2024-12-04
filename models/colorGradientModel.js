@@ -13,6 +13,10 @@ var colorGradientSchema = new mongoose.Schema(
             required: false,
             default: []
         },
+        deletedAt: {
+            type: Date,
+            default: null
+        },
         id: { type: Number, unique: true },
     },
     {

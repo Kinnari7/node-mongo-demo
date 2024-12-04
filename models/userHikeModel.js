@@ -4,12 +4,12 @@ const AutoIncrement = require('./autoIncrementModel');
 const userHikeSchema = new mongoose.Schema(
   {
     userId: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
-      required: true,
+      required: false,
     },
     hikeId: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Hikes",
       required: true,
     },
@@ -20,6 +20,7 @@ const userHikeSchema = new mongoose.Schema(
     endTime: {
       type: Date,
       default: null,
+      required: false
     },
     currentDistance: {
       type: Number,
@@ -30,6 +31,14 @@ const userHikeSchema = new mongoose.Schema(
       default: 0,
     },
     isCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    isSponsored: {
+      type: Boolean,
+      default: false,
+    },
+    isAlternateTracking: {
       type: Boolean,
       default: false,
     },
@@ -52,7 +61,11 @@ const userHikeSchema = new mongoose.Schema(
     },
     completionDate: {
       type: Date,
-      required: true,
+      required: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null
     }
   },
   {
