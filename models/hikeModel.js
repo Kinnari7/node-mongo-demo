@@ -51,7 +51,7 @@ var hikeSchema = new mongoose.Schema(
                 coordinates: {
                     type: [
                         {
-                            latitute: {
+                            latitude: {
                                 type: Number,
                                 require: false,
                             },

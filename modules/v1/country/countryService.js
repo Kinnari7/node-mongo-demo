@@ -1,5 +1,6 @@
 const countryService = {};
 const Modals = require("../../../models");
+const { ObjectId } = require('mongodb');
 
 countryService.getCountryList = () => {
     return Modals.Countries.find();
@@ -17,5 +18,22 @@ countryService.updateCountryStatus = (data) => {
         }, { new: true, lean: true }).lean();
     }
 };
+
+countryService.addCountry = (data) => {
+    return Modals.Countries.create({
+        ...data,
+        status: true,
+        count: 1
+    });
+}
+
+countryService.editCountry = (data) => {
+    return Modals.Countries.findOneAndUpdate({
+        _id: ObjectId(data._id)
+    }, {
+        title: data.title,
+        image: data.image
+    }, {new: true, lean: true }).lean();
+}
 
 module.exports = countryService;

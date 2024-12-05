@@ -17,7 +17,8 @@ challengeController.getChallengesList = async (req, res) => {
         return res.send({
             message: 'Error',
             status: 200,
-            success: false
+            success: false,
+            data: e
         });
     }
 };
@@ -94,7 +95,7 @@ challengeController.fetchLeaderboard = async (req, res) => {
         await res.send({
             msg: 'Leader Board',
             data: {
-                ColorGradient: {},
+                ColorGradient: [],
                 hikes: allHikes
             },
             status: 200,

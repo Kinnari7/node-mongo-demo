@@ -2,13 +2,66 @@ const contryController = {};
 const { size } = require('lodash');
 const countryService = require('./countryService');
 
+contryController.addCountry = async (req, res) => {
+    try {
+        let response = await countryService.addCountry(req.body);
+        res.send({
+            message: 'Success',
+            data: response,
+            status: 200,
+            success: true
+        });
+    } catch (e) {
+        return res.send({
+            message: 'Error',
+            data: e,
+            status: 500,
+            success: false
+        });
+    }
+};
+
+contryController.editCountry = async (req, res) => {
+    try {
+        let response = await countryService.editCountry(req.body);
+        res.send({
+            message: 'Success',
+            data: response,
+            status: 200,
+            success: true
+        });
+    } catch (e) {
+        return res.send({
+            message: 'Error',
+            data: e,
+            status: 500,
+            success: false
+        });
+    }
+};
+
 contryController.getCountryList = async (req, res) => {
     try {
         let response = await countryService.getCountryList();
-        response.forEach((country) => {
-            country._id = country.index;
+        res.send({
+            message: 'Success',
+            data: { categories: response },
+            status: 200,
+            success: true
         });
-        console.log('/////', response);
+    } catch (e) {
+        return res.send({
+            message: 'Error',
+            data: e,
+            status: 500,
+            success: false
+        });
+    }
+};
+
+contryController.getCountry = async (req, res) => {
+    try {
+        let response = await countryService.getCountryList();
         res.send({
             message: 'Success',
             data: { categories: response },

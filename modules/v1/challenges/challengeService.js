@@ -16,10 +16,12 @@ challengeService.getChallengesList = async () => {
     {
       $addFields: {
         colorGradient: {
-          $map: {
+          $reduce: {
             input: "$colorGradient",
-            as: "gradient",
-            in: "$$gradient.color"
+            initialValue: [],
+            in: {
+              $concatArrays: ["$$value", "$$this.color" ]
+            }
           }
         }
       }
@@ -75,10 +77,12 @@ challengeService.getChallenge = async (data) => {
     {
       $addFields: {
         colorGradient: {
-          $map: {
+          $reduce: {
             input: "$colorGradient",
-            as: "gradient",
-            in: "$$gradient.color"
+            initialValue: [],
+            in: {
+              $concatArrays: ["$$value", "$$this.color" ]
+            }
           }
         }
       }

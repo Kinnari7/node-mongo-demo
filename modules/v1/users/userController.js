@@ -8,7 +8,7 @@ userController.loginUser = async (req, res) => {
     try {
         let response = await userService.authUser(req.body);
         if (size(response) > 0) {
-            if (response?.isVerified || response?.isAdmin) {
+            if (response?.isVerified && !response?.isAdmin) {
                 const locations = await userService.addUserLocation(req.body, response.id);
                 const preferences = await userService.addUserPreference(req.body, response.id);
                 const token = await authUser.createJWTToken({ id: response.id });
@@ -34,6 +34,16 @@ userController.loginUser = async (req, res) => {
                 await res.send({
                     message: 'Login Successful.',
                     data: updatedResponse,
+                    status: 200,
+                    success: true
+                });
+            }
+            else if (response.isAdmin) {
+                const token = await authUser.createJWTToken({ id: response.id });
+                response.accessToken = token;
+                await res.send({
+                    message: 'Admin Login Successful.',
+                    data: response,
                     status: 200,
                     success: true
                 });
@@ -199,23 +209,6 @@ userController.deleteUsersList = async (req, res) => {
             data: e
         });
     }
-};
-
-userController.uploadImage = async (req, res) => {
-    console.log('req body is.....', req.body);
-    const data = uploadImage.uploadImage;
-    console.log('data is.....', data);
-    // try {
-    //     res.send({
-    //         msg: 'Success',
-    //         data: 'Image uploaded successfully.'
-    //     })
-    // } catch (e) {
-    //     return res.send({
-    //         msg: 'Error',
-    //         data: e
-    //     })
-    // }
 };
 
 module.exports = userController;

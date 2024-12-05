@@ -39,7 +39,7 @@ challengeRoutes.post('/leaderboard', fetchLeaderboard);
 const saveChallenge = [
     challengeController.saveChallenge
 ];
-challengeRoutes.post('/myHike', saveChallenge);
+challengeRoutes.post('/myHikes', saveChallenge);
 
 // update challenge
 const updateChallenge = [
