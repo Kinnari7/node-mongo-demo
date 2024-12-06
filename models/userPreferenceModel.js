@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 const AutoIncrement = require('./autoIncrementModel');
+
 // Setup schema
 var userPreferencesSchema = new mongoose.Schema(
     {

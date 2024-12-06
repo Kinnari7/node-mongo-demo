@@ -17,6 +17,13 @@ const addChallengeMiddleware = [
 ];
 challengeRoutes.post('/admin/add-challenge', addChallengeMiddleware);
 
+// edit challenge by admin
+const editChallengeMiddleware = [
+    // authUser.validateJWTToken,
+    challengeController.editChallengeByAdmin
+];
+challengeRoutes.post('/admin/edit-challenge', editChallengeMiddleware);
+
 // get all challenges
 const getGuestChallengeList = [
     challengeController.getGuestChallengeList
@@ -28,6 +35,12 @@ const getChallenge = [
     challengeController.getChallenge
 ];
 challengeRoutes.post('/findChallenge', getChallenge);
+
+// // get challenge
+// const getChallenge = [
+//     challengeController.getChallenge
+// ];
+// challengeRoutes.post('/findChallenge', getChallenge);
 
 // fetch leaderboard
 const fetchLeaderboard = [

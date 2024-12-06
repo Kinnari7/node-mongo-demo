@@ -27,9 +27,25 @@ challengeController.addChallenge = async (req, res) => {
     try {
         let response = await challengeService.addChallenge(req.body);
         if (size(response) > 0) {
-            await challengeService.addChallengeColor(response.id, req.body);
             await res.send({
                 msg: 'Challenge Added',
+                data: response
+            });
+        }
+    } catch (e) {
+        return res.send({
+            msg: 'Error',
+            data: e
+        });
+    }
+};
+
+challengeController.editChallengeByAdmin = async (req, res) => {
+    try {
+        let response = await challengeService.editChallengeByAdmin(req.body);
+        if (size(response) > 0) {
+            await res.send({
+                msg: 'Challenge Updated',
                 data: response
             });
         }
@@ -91,7 +107,6 @@ challengeController.getChallenge = async (req, res) => {
 challengeController.fetchLeaderboard = async (req, res) => {
     try {
         let allHikes = await challengeService.getLeaderBoardData(req.body);
-        // let colorGradient = await challengeService.getColorGradientForLB(req.body);
         await res.send({
             msg: 'Leader Board',
             data: {

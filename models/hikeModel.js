@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 const AutoIncrement = require('./autoIncrementModel');
+
 // Setup schema
 var hikeSchema = new mongoose.Schema(
     {
@@ -52,11 +53,11 @@ var hikeSchema = new mongoose.Schema(
                     type: [
                         {
                             latitude: {
-                                type: Number,
+                                type: String,
                                 require: false,
                             },
                             longitude: {
-                                type: Number,
+                                type: String,
                                 require: false
                             }
                         }
@@ -94,6 +95,11 @@ var hikeSchema = new mongoose.Schema(
             type: [String],
             default: [],
             required: false
+        },
+        color: {
+            type: [String],
+            required: false,
+            default: []
         },
         deletedAt: {
             type: Date,

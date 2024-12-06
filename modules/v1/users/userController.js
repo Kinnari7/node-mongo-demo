@@ -9,7 +9,6 @@ userController.loginUser = async (req, res) => {
         let response = await userService.authUser(req.body);
         if (size(response) > 0) {
             if (response?.isVerified && !response?.isAdmin) {
-                const locations = await userService.addUserLocation(req.body, response.id);
                 const preferences = await userService.addUserPreference(req.body, response.id);
                 const token = await authUser.createJWTToken({ id: response.id });
                 response.accessToken = token;
@@ -21,8 +20,8 @@ userController.loginUser = async (req, res) => {
                         favorites: [],
                         freeChallenges: [],
                         signUpLoc: {
-                            latitude: locations?.latitude || null,
-                            longitude: locations?.longitude || null
+                            latitude: response?.latitude || null,
+                            longitude: response?.longitude || null
                         },
                         inAppNotification: preferences?.inAppNotification,
                         notificationToMyPost: preferences?.notificationToMyPost,
@@ -74,10 +73,10 @@ userController.loginUser = async (req, res) => {
 
 userController.registerUser = async (req, res) => {
     try {
+        // req.body.countryId = 1;
         let response = await userService.addUsersList(req.body);
-        console.log('////', response);
-        if (size(response) > 0) {
-            const locations = await userService.addUserLocation(req.body, response.id);
+        if (response) {
+            console.log('///',response)
             const preferences = await userService.addUserPreference(req.body, response.id);
             const token = await authUser.createJWTToken({ id: response.id });
             if (!response?.isVerified) {
@@ -91,8 +90,8 @@ userController.registerUser = async (req, res) => {
                     favorites: [],
                     freeChallenges: [],
                     signUpLoc: {
-                        latitude: locations?.latitude || null,
-                        longitude: locations?.longitude || null
+                        latitude: response?.latitude || null,
+                        longitude: response?.longitude || null
                     },
                     inAppNotification: preferences?.inAppNotification,
                     notificationToMyPost: preferences?.notificationToMyPost,

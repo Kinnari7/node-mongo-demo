@@ -51,25 +51,18 @@ userService.getUsersList = async (reqData) => {
 userService.addUsersList = async (data) => {
   const token = crypto.randomBytes(12).toString('hex');
   data.verificationToken = token;
-  return await Modals.Users.create(data);
-};
-
-userService.addUserLocation = async (reqData, userId) => {
-  let userLocation = await Modals.UserLocations.findOne({ user_id: userId });
-  if (size(userLocation) < 0) {
-    // Use create to ensure the auto-increment works
-    userLocation = await Modals.UserLocations.create({
-      user_id: userId,
-      latitude: reqData?.signUpLoc?.latitude,
-      longitude: reqData?.signUpLoc?.longitude
-    });
-  }
-
-  return userLocation;
+  const { latitude, longitude } = data.signUpLoc || {};
+  const userData = {
+    ...data,
+    latitude,
+    longitude,
+  };
+  return await Modals.Users.create(userData);
 };
 
 userService.addUserPreference = async (reqData, userId) => {
   let userPreferences = await Modals.UserPreferences.findOne({ user_id: userId });
+  console.log('///',userPreferences)
   if (size(userPreferences) > 0) {
     // If the document exists, update the necessary fields
     userPreferences.inAppNotification = reqData?.inAppNotification || false;
@@ -79,6 +72,7 @@ userService.addUserPreference = async (reqData, userId) => {
     // Save the updated document
     await userPreferences.save();
   } else {
+    console.log('in else,', userId)
     // If the document does not exist, create it to trigger the auto-increment functionality
     userPreferences = await Modals.UserPreferences.create({
       user_id: userId,
@@ -88,7 +82,7 @@ userService.addUserPreference = async (reqData, userId) => {
       language: reqData?.language || 'English'
     });
   }
-
+  console.log('userPreferences',userPreferences)
   return userPreferences;
 };
 

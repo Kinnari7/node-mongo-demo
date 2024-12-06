@@ -31,7 +31,15 @@ var userSchema = new mongoose.Schema(
     countryId: {
       type: Number,
       ref: "Countries",
-      required: false,
+      required: false
+    },
+    latitude: {
+      type: String,
+      required: true,
+    },
+    longitude: {
+      type: String,
+      required: true,
     },
     photo: {
       type: String,

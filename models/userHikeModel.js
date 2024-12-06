@@ -66,7 +66,8 @@ const userHikeSchema = new mongoose.Schema(
     deletedAt: {
       type: Date,
       default: null
-    }
+    },
+    id: { type: Number, unique: true },
   },
   {
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },

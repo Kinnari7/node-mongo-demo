@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 const AutoIncrement = require('./autoIncrementModel');
-const AutoIncrementIndex = require("mongoose-sequence")(mongoose);
+// const AutoIncrementIndex = require("mongoose-sequence")(mongoose);
 
 // Setup schema
 var countrySchema = new mongoose.Schema(
@@ -25,6 +25,8 @@ var countrySchema = new mongoose.Schema(
         },
         index: {
             type: Number,
+            required: false,
+            default: 1
         },
         deletedAt: {
             type: Date,
@@ -38,7 +40,7 @@ var countrySchema = new mongoose.Schema(
     }
 );
 
-countrySchema.plugin(AutoIncrementIndex, { inc_field: "index" });
+// countrySchema.plugin(AutoIncrementIndex, { inc_field: "index" });
 
 countrySchema.plugin(AutoIncrement, {modelName: 'Countries', field: 'id' });
 const Countries = mongoose.model.Countries || mongoose.model("Countries", countrySchema);

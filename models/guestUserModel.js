@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 const AutoIncrement = require('./autoIncrementModel');
+
 // Setup schema
 var guestUserSchema = new mongoose.Schema(
     {
