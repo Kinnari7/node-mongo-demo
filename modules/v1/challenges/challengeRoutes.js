@@ -36,11 +36,11 @@ const getChallenge = [
 ];
 challengeRoutes.post('/findChallenge', getChallenge);
 
-// // get challenge
-// const getChallenge = [
-//     challengeController.getChallenge
-// ];
-// challengeRoutes.post('/findChallenge', getChallenge);
+// find challenge
+const findHikeMiddleware = [
+    challengeController.findHike
+];
+challengeRoutes.post('/findHike', findHikeMiddleware);
 
 // fetch leaderboard
 const fetchLeaderboard = [

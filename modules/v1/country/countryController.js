@@ -40,6 +40,24 @@ contryController.editCountry = async (req, res) => {
     }
 };
 
+contryController.deleteCountry = async (req, res) => {
+    try {
+        let response = await countryService.deleteCountry(req.body);
+        res.send({
+            message: 'Success',
+            status: 200,
+            success: true
+        });
+    } catch (e) {
+        return res.send({
+            message: 'Error',
+            data: e,
+            status: 500,
+            success: false
+        });
+    }
+};
+
 contryController.getCountryList = async (req, res) => {
     try {
         let response = await countryService.getCountryList();

@@ -25,7 +25,7 @@ countryService.addCountry = (data) => {
         status: true,
         count: 1
     });
-}
+};
 
 countryService.editCountry = (data) => {
     return Modals.Countries.findOneAndUpdate({
@@ -34,6 +34,12 @@ countryService.editCountry = (data) => {
         title: data.title,
         image: data.image
     }, {new: true, lean: true }).lean();
-}
+};
+
+countryService.deleteCountry = (data) => {
+    return Modals.Countries.deleteOne({
+        _id: ObjectId(data._id)
+    });
+};
 
 module.exports = countryService;

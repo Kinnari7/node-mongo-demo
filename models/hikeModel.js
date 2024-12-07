@@ -53,11 +53,11 @@ var hikeSchema = new mongoose.Schema(
                     type: [
                         {
                             latitude: {
-                                type: String,
+                                type: Number,
                                 require: false,
                             },
                             longitude: {
-                                type: String,
+                                type: Number,
                                 require: false
                             }
                         }

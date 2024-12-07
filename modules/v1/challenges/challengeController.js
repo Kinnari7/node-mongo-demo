@@ -90,8 +90,29 @@ challengeController.getChallenge = async (req, res) => {
                 //         _id:
                 //         duration:
                 // }
-                challenge: response
+                challenge: response[0]
             },
+            status: 200,
+            success: true
+        });
+    } catch (e) {
+        return res.send({
+            message: 'Error',
+            status: 200,
+            success: false
+        });
+    }
+};
+
+challengeController.findHike = async (req, res) => {
+    try {
+        let response = await challengeService.findHike(req.body);
+        await res.send({
+            msg: 'Find Hike',
+            data: {
+                hike: response
+            },
+            isMedalRedeemed: false,
             status: 200,
             success: true
         });

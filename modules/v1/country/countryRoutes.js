@@ -14,6 +14,12 @@ const editCountryMiddleware = [
 ];
 countryRoutes.post('/admin/edit-country', editCountryMiddleware);
 
+// delete country
+const deleteCountryMiddleware = [
+    countryController.deleteCountry
+];
+countryRoutes.post('/admin/delete-country', deleteCountryMiddleware);
+
 // get country
 const getCountryMiddleware = [
     countryController.getCountry

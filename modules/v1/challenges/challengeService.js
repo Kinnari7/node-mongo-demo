@@ -45,6 +45,24 @@ challengeService.getChallenge = async (data) => {
   ]);
 };
 
+challengeService.findHike = async (data) => {
+  const hikeDetail = await Modals.Hikes.aggregate([
+    {
+      $match: { _id: ObjectId(data.id) }
+    },
+    {
+      $addFields: {
+        colorGradient: "$color"
+      }
+    }
+  ]);
+  const userHike = await Modals.UserHike.findOne({
+    _id: ObjectId(data.id),
+    userId: ObjectId(data.userId)
+  }).lean();
+  return {...hikeDetail[0], ...userHike};
+};
+
 challengeService.getLeaderBoardData = async (data) => {
   return await Modals.UserHike.aggregate([
     {
@@ -98,19 +116,19 @@ challengeService.deleteChallenge = async (data) => {
 
   await Modals.UserHike.deleteOne({ _id: ObjectId(data.hikeId), userId: ObjectId(data.userId) });
   const hikeDetail = await Modals.Hikes.findOne({ _id: ObjectId(data.hikeId) }).lean();
-  console.log('.....', userHike);
   return { ...userHike, ...hikeDetail };
 };
 
 challengeService.saveChallenge = async (data) => {
   const transformedData = {
     ...data,
-    hikeId: data.trailId,
-    userId: data.id
+    hikeId: ObjectId(data.trailId),
+    userId: ObjectId(data.id)
   };
+  delete transformedData.id;
   const userHike = await Modals.UserHike.create(transformedData);
-  const hikeDetail = await Modals.Hikes.findOne({ _id: data.trailId }).lean();
-  return { ...userHike.toObject(), ...hikeDetail };
+  const hikeDetail = await Modals.Hikes.findOne({ _id: ObjectId(data.trailId) }).lean();
+  return { ...hikeDetail, ...userHike.toObject() };
 };
 
 module.exports = challengeService;
