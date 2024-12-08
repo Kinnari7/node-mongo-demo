@@ -132,7 +132,7 @@ challengeController.fetchLeaderboard = async (req, res) => {
             msg: 'Leader Board',
             data: {
                 ColorGradient: [],
-                hikes: allHikes
+                hike: allHikes
             },
             status: 200,
             success: true
@@ -149,7 +149,9 @@ challengeController.fetchLeaderboard = async (req, res) => {
 
 challengeController.updateChallenge = async (req, res) => {
     try {
-        let response = await challengeService.updateChallenge(req.body);
+        // console.log('req..', req.params, '...', req.body);
+        const { id } = req.params;
+        let response = await challengeService.updateChallenge(id, req.body);
         if (size(response) > 0) {
             await res.send({
                 msg: 'Update My Hike',

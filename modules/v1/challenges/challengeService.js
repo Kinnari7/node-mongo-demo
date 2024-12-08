@@ -26,7 +26,7 @@ challengeService.editChallengeByAdmin = async (data) => {
   }, {
     $set: data
   }, { new: true, lean: true }).lean();
-}
+};
 
 challengeService.getGuestChallengeList = async (data) => {
   return await Modals.GuestUsers.findOne({ deviceId: data?.deviceId });
@@ -60,7 +60,7 @@ challengeService.findHike = async (data) => {
     _id: ObjectId(data.id),
     userId: ObjectId(data.userId)
   }).lean();
-  return {...hikeDetail[0], ...userHike};
+  return { ...hikeDetail[0], ...userHike };
 };
 
 challengeService.getLeaderBoardData = async (data) => {
@@ -94,10 +94,10 @@ challengeService.getLeaderBoardData = async (data) => {
   ]);
 };
 
-challengeService.updateChallenge = async (data) => {
+challengeService.updateChallenge = async (id, data) => {
+  console.log('///', id, data);
   const userHike = await Modals.UserHike.findOneAndUpdate({
-    hikeId: ObjectId(data.trailId),
-    userId: ObjectId(data.userId)
+    _id: ObjectId(id),
   },
     { $set: data },
     { lean: true });

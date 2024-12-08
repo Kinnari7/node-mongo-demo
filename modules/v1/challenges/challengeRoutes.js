@@ -58,7 +58,7 @@ challengeRoutes.post('/myHikes', saveChallenge);
 const updateChallenge = [
     challengeController.updateChallenge
 ];
-challengeRoutes.post('/updateHike', updateChallenge);
+challengeRoutes.put('/updateHike/:id', updateChallenge);
 
 // delete challenge
 const deleteChallenge = [
