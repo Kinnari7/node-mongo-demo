@@ -149,7 +149,6 @@ challengeController.fetchLeaderboard = async (req, res) => {
 
 challengeController.updateChallenge = async (req, res) => {
     try {
-        // console.log('req..', req.params, '...', req.body);
         const { id } = req.params;
         let response = await challengeService.updateChallenge(id, req.body);
         if (size(response) > 0) {
@@ -201,6 +200,29 @@ challengeController.saveChallenge = async (req, res) => {
             await res.send({
                 msg: 'Challenge Added Successfully',
                 data: response,
+                status: 200,
+                success: true
+            });
+        }
+    } catch (e) {
+        return res.send({
+            message: 'Error',
+            status: 200,
+            success: false,
+            data: e
+        });
+    }
+};
+
+challengeController.fetchHikeList = async (req, res) => {
+    try {
+        let response = await challengeService.fetchHikeList(req.body);
+        if (response) {
+            await res.send({
+                msg: 'Welcome! Guest User',
+                data: {
+                    hike: response
+                },
                 status: 200,
                 success: true
             });

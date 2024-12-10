@@ -54,6 +54,12 @@ const saveChallenge = [
 ];
 challengeRoutes.post('/myHikes', saveChallenge);
 
+// find challenge
+const findChallenge = [
+    challengeController.fetchHikeList
+];
+challengeRoutes.post('/hikeList', findChallenge);
+
 // update challenge
 const updateChallenge = [
     challengeController.updateChallenge

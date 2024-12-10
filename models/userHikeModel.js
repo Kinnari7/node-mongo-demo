@@ -48,7 +48,8 @@ const userHikeSchema = new mongoose.Schema(
     },
     duration: {
       type: Number,
-      default: null,
+      default: 0,
+      required: false
     },
     rank: {
       type: Number,

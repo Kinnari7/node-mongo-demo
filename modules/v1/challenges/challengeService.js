@@ -21,11 +21,11 @@ challengeService.addChallenge = async (req) => {
 };
 
 challengeService.editChallengeByAdmin = async (data) => {
-  return await Modals.Hikes.findOneAndUpdate({
-    _id: ObjectId(data._id)
-  }, {
-    $set: data
-  }, { new: true, lean: true }).lean();
+  return await Modals.Hikes.findOneAndUpdate(
+    { _id: ObjectId(data._id)}, 
+    { $set: {...data} }, 
+    { new: true, lean: true }
+  ).lean();
 };
 
 challengeService.getGuestChallengeList = async (data) => {
@@ -64,7 +64,7 @@ challengeService.findHike = async (data) => {
 };
 
 challengeService.getLeaderBoardData = async (data) => {
-  return await Modals.UserHike.aggregate([
+  const response = await Modals.UserHike.aggregate([
     {
       $match: { hikeId: ObjectId(data.trailId) }
     },
@@ -92,10 +92,15 @@ challengeService.getLeaderBoardData = async (data) => {
       }
     }
   ]);
+  const sortedData = response.sort((a, b) => a.duration - b.duration);
+
+  sortedData.forEach((item, index) => {
+    item.rank = index + 1; // Rank starts from 1
+  });
+  return sortedData;
 };
 
 challengeService.updateChallenge = async (id, data) => {
-  console.log('///', id, data);
   const userHike = await Modals.UserHike.findOneAndUpdate({
     _id: ObjectId(id),
   },
@@ -129,6 +134,54 @@ challengeService.saveChallenge = async (data) => {
   const userHike = await Modals.UserHike.create(transformedData);
   const hikeDetail = await Modals.Hikes.findOne({ _id: ObjectId(data.trailId) }).lean();
   return { ...hikeDetail, ...userHike.toObject() };
+};
+
+challengeService.fetchHikeList = async (data) => {
+  return await Modals.UserHike.aggregate([
+    {
+      $match: { userId: ObjectId(data.userId) } 
+    },
+    {
+      // Lookup for the corresponding Hike/Challenge details
+      $lookup: {
+        from: "hikes", // Assuming the Hikes collection stores the challenge data
+        localField: "hikeId", // The trailId from UserHike
+        foreignField: "_id", // The _id field in Hikes
+        as: "challenge"
+      }
+    },
+    {
+      $addFields: {
+        challenge: { $arrayElemAt: ["$challenge", 0]}
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        challenge: {
+          _id: "$challenge._id",
+          colorGradient:"$challenge.color",
+          distance: "$challenge.distance",
+          image: "$challenge.image",
+          title: "$challenge.title",
+          withRedemption: "$challenge.withRedemption"
+        },
+        challengeType: 1,
+        completionPercentage: 1,
+        createdAt: 1,
+        currentDistance: 1,
+        duration: 1,
+        endTime: 1,
+        isActive: 1,
+        isCompleted: 1,
+        rank: 1,
+        startTime: 1,
+        trailId: 1,
+        updatedAt: 1,
+        userId: 1
+      }
+    }
+  ])
 };
 
 module.exports = challengeService;

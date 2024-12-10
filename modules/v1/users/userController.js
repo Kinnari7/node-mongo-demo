@@ -210,4 +210,23 @@ userController.deleteUsersList = async (req, res) => {
     }
 };
 
+userController.adminDashboard = async (req, res) => {
+    try {
+        let response = await userService.adminDashboard();
+        await res.send({
+            msg: 'Success',
+            data: response,
+            success: true,
+            status: 200
+        });
+    } catch (e) {
+        return res.send({
+            msg: 'Error',
+            data: e,
+            success: false,
+            status: 200
+        });
+    }
+};
+
 module.exports = userController;

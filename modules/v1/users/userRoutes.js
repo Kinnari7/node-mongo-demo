@@ -37,4 +37,10 @@ const addUsersMiddleware = [
 ];
 userRoutes.post('/add-guest-user', addUsersMiddleware);
 
+// admin dashboard
+const adminDashboardMiddleware = [
+    userController.adminDashboard
+];
+userRoutes.post('/admin/dashboard', adminDashboardMiddleware);
+
 module.exports = userRoutes;    

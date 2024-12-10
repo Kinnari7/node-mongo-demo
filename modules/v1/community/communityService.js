@@ -13,9 +13,7 @@ communityService.deletePost = async (id) => {
 };
 
 communityService.getAllPost = async (data) => {
-    return await Modals.Community.find({
-        _id: ObjectId(data.senderId)
-    });
+    return await Modals.Community.find();
 };
 
 module.exports = communityService;

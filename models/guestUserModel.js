@@ -21,7 +21,7 @@ var guestUserSchema = new mongoose.Schema(
             required: false,
         },
         countryId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Number,
             ref: "Countries",
             required: false,
         },

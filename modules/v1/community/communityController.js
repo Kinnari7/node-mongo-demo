@@ -1,12 +1,14 @@
 const communityController = {};
 const communityService = require('./communityService');
+const { size } = require('lodash');
 
 communityController.createPost = async (req, res) => {
     try {
         let response = await communityService.createPost(req.body);
+        console.log('response',response)
         if (size(response) > 0) {
             await res.send({
-                msg: 'Post added successfully',
+                message : 'Post added successfully',
                 data: response,
                 success: true,
                 status: 200
@@ -28,7 +30,7 @@ communityController.deletePost = async (req, res) => {
         let response = await communityService.deletePost(id);
         if (size(response) > 0) {
             await res.send({
-                msg: 'Post added successfully',
+                message : 'Post deleted successfully',
                 data: response,
                 success: true,
                 status: 200
@@ -49,8 +51,11 @@ communityController.getAllPost = async (req, res) => {
         let response = await communityService.getAllPost(req.body);
         if (size(response) > 0) {
             await res.send({
-                msg: 'Post added successfully',
-                data: response,
+                message : 'All Community',
+                data: {
+                    communityList: response,
+                    totalCount: 2
+                },
                 success: true,
                 status: 200
             });

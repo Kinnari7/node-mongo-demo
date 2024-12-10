@@ -62,7 +62,6 @@ userService.addUsersList = async (data) => {
 
 userService.addUserPreference = async (reqData, userId) => {
   let userPreferences = await Modals.UserPreferences.findOne({ user_id: userId });
-  console.log('///',userPreferences)
   if (size(userPreferences) > 0) {
     // If the document exists, update the necessary fields
     userPreferences.inAppNotification = reqData?.inAppNotification || false;
@@ -72,7 +71,6 @@ userService.addUserPreference = async (reqData, userId) => {
     // Save the updated document
     await userPreferences.save();
   } else {
-    console.log('in else,', userId)
     // If the document does not exist, create it to trigger the auto-increment functionality
     userPreferences = await Modals.UserPreferences.create({
       user_id: userId,
@@ -82,7 +80,6 @@ userService.addUserPreference = async (reqData, userId) => {
       language: reqData?.language || 'English'
     });
   }
-  console.log('userPreferences',userPreferences)
   return userPreferences;
 };
 
@@ -99,6 +96,40 @@ userService.verifyEmail = (data) => {
   return Modals.Users.findOneAndUpdate({ verificationToken: data.token }, {
     isVerified: true
   }, { new: true, lean: true }).lean();
+};
+
+userService.adminDashboard = async () => {
+  const totalDuration = await Modals.UserHike.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalDuration: { $sum: "$duration" }
+      }
+    }
+  ]);
+  const completedCount = await Modals.UserHike.aggregate([
+    {
+      $match: { isCompleted: true }
+    },
+    {
+      $count: "completedCount"
+    }
+  ]);
+  const activeCount = await Modals.UserHike.aggregate([
+    {
+      $match: { isACtive: true }
+    },
+    {
+      $count: "completedCount"
+    }
+  ]);
+  const userCount = await Modals.Users.countDocuments();
+  return {
+    totalDuration: totalDuration.length > 0 ? totalDuration[0].totalDuration : 0,
+    completedCount: completedCount.length > 0 ? completedCount[0].completedCount : 0,
+    activeCount: activeCount.length > 0 ? activeCount[0].completedCount : 0,
+    userCount: userCount || 0
+  }
 };
 
 module.exports = userService;
